@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tool="http://schemas.android.com/apk/res-auto">
+        <FrameLayout
+            android:id="@+id/fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </FrameLayout>
+        <android.support.design.widget.NavigationView
+            android:id="@+id/navigation"
+            android:layout_width="350dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fadingEdge="vertical"
+            android:theme="@style/NavigationDrawerStyle"
+            tool:menu="@menu/menu"/>
+    </android.support.v4.widget.DrawerLayout>
+</RelativeLayout>

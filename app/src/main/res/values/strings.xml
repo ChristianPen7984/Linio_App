@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Linio</string>
+    <string name="slogan">Innovative Task Managing</string>
+    <string name="panels_nav">Panels</string>
+    <string name="home_nav">Home</string>
+    <string name="email_hint">Email:</string>
+    <string name="password_hint">Password:</string>
+    <string name="login">LOGIN</string>
+    <string name="createAccount">No account yet? Create one</string>
+    <string name="repeat_password_hint">Repeat Password</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="log_out">Log Out</string>
+    <string name="board_placeholder">BOARD PLACEHOLDER...</string>
+    <string name="create_panel">Create Panel</string>
+    <string name="panel_name">Panel name</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

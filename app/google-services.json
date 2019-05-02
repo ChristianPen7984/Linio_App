@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "226450342771",
+    "firebase_url": "https://linio-app-2742e.firebaseio.com",
+    "project_id": "linio-app-2742e",
+    "storage_bucket": "linio-app-2742e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226450342771:android:fd5857ad36a6597c",
+        "android_client_info": {
+          "package_name": "com.app.linio_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226450342771-3qe5hn3muoei872hakjjr43omkpdb0h3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNKfC_yuXw4ZosOzKHknYvdxkdRgq00RM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226450342771-3qe5hn3muoei872hakjjr43omkpdb0h3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "226450342771-9lpgooa38954nn3o3rrm2as49i8b2cam.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.linioapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
