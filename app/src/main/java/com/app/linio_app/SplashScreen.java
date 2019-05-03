@@ -1,13 +1,13 @@
 package com.app.linio_app;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import java.util.concurrent.TimeUnit;
 
-public class SplashScreen extends AppCompatActivity {
+public class SplashScreen extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
