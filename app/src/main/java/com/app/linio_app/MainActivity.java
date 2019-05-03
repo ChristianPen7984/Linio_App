@@ -11,10 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.app.linio_app.Fragments.Home;
 import com.app.linio_app.Fragments.Login;
 import com.app.linio_app.Fragments.Panels;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -22,14 +27,50 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigation;
     ActionBarDrawerToggle actionBarDrawerToggle;
 
+    FirebaseAuth auth;
+    DatabaseReference database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         drawer = findViewById(R.id.drawer);
         navigation = findViewById(R.id.navigation);
+
+        auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance().getReference();
+
+        Toast.makeText(MainActivity.this,auth.getUid(),Toast.LENGTH_LONG).show();
+
+                     getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragmentContainer, new Login())
+                            .commit();
+
         navigation.setNavigationItemSelectedListener(this);
         initNavView();
+//        toggleNavDrawerOptions();
+    }
+
+    private void initNavView() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this,drawer,0,0);
+        drawer.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+    }
+
+    private void setActionBarTitle(String title) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(title);
+        }
     }
 
     @Override
@@ -64,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.logout:
                 transaction.replace(R.id.fragmentContainer,new Login());
                 setActionBarTitle("LINIO");
-//                auth.signOut();
+                auth.signOut();
                 hideNonAuthLinks();
                 drawer.closeDrawers();
                 break;
@@ -73,28 +114,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return false;
     }
 
-    private void initNavView() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-        actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this,drawer,0,0);
-        drawer.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-    }
-
-    private void setActionBarTitle(String title) {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(title);
-        }
-    }
-
     private void hideNonAuthLinks() {
         Menu menu = navigation.getMenu();
         menu.findItem(R.id.panels).setVisible(false);
+        menu.findItem(R.id.logout).setVisible(false);
     }
+
+    private void showAuthLinks() {
+        Menu menu = navigation.getMenu();
+        menu.findItem(R.id.panels).setVisible(true);
+        menu.findItem(R.id.logout).setVisible(true);
+    }
+
+//    private void toggleNavDrawerOptions() {
+//        auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                if (user != null) {
+//                    showAuthLinks();
+//                } else {
+//                    hideNonAuthLinks();
+//                    getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.fragmentContainer, new Login())
+//                            .commit();
+//                }
+//            }
+//        });
+//    }
 }
