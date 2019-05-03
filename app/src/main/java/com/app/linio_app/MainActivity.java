@@ -11,13 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.app.linio_app.Fragments.Home;
 import com.app.linio_app.Fragments.Login;
 import com.app.linio_app.Fragments.Panels;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -41,16 +39,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference();
 
-        Toast.makeText(MainActivity.this,auth.getUid(),Toast.LENGTH_LONG).show();
-
-                     getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragmentContainer, new Login())
-                            .commit();
-
         navigation.setNavigationItemSelectedListener(this);
         initNavView();
-//        toggleNavDrawerOptions();
+        toggleNavDrawerOptions();
     }
 
     private void initNavView() {
@@ -102,6 +93,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 setActionBarTitle("PANELS");
                 drawer.closeDrawers();
                 break;
+            case R.id.login:
+                transaction.replace(R.id.fragmentContainer,new Login());
+                setActionBarTitle("LOGIN");
             case R.id.logout:
                 transaction.replace(R.id.fragmentContainer,new Login());
                 setActionBarTitle("LINIO");
@@ -118,28 +112,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Menu menu = navigation.getMenu();
         menu.findItem(R.id.panels).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
+        menu.findItem(R.id.login).setVisible(true);
     }
 
     private void showAuthLinks() {
         Menu menu = navigation.getMenu();
         menu.findItem(R.id.panels).setVisible(true);
         menu.findItem(R.id.logout).setVisible(true);
+        menu.findItem(R.id.login).setVisible(false);
     }
 
-//    private void toggleNavDrawerOptions() {
-//        auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                if (user != null) {
-//                    showAuthLinks();
-//                } else {
-//                    hideNonAuthLinks();
-//                    getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.fragmentContainer, new Login())
-//                            .commit();
-//                }
-//            }
-//        });
-//    }
+    private void toggleNavDrawerOptions() {
+        auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (auth.getCurrentUser() != null) {
+                    showAuthLinks();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragmentContainer, new Panels())
+                            .commit();
+                } else {
+                    hideNonAuthLinks();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragmentContainer, new Login())
+                            .commit();
+                }
+            }
+        });
+    }
 }

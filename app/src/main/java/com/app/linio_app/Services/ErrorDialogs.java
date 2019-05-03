@@ -58,4 +58,12 @@ public class ErrorDialogs {
     public void getFailedAccountSignUp() {
         dialogTemplate("Unable to sign up","Account Creation Failure");
     }
+
+    public void getMissingEmailReset() {
+        dialogTemplate("Unable to reset password","Missing Email");
+    }
+
+    public void getFailedPasswordReset() {
+        dialogTemplate("Unable to reset password","Could not locate email");
+    }
 }

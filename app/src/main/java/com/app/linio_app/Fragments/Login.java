@@ -75,11 +75,14 @@ public class Login extends Fragment implements View.OnClickListener {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (!task.isSuccessful()) new ErrorDialogs(getContext()).getInvalidCredentials();
                                     else {
-                                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                                        ft.replace(R.id.fragmentContainer, new Panels());
-                                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                                        ft.addToBackStack(null);
-                                        ft.commit();
+                                        FragmentTransaction ft = null;
+                                        if (getFragmentManager() != null) {
+                                            ft = getFragmentManager().beginTransaction();
+                                            ft.replace(R.id.fragmentContainer, new Panels());
+                                            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                                            ft.addToBackStack(null);
+                                            ft.commit();
+                                        }
                                     }
                                 }
                             });

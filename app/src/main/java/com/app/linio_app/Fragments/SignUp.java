@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.app.linio_app.R;
 import com.app.linio_app.Services.ErrorDialogs;
@@ -20,6 +21,7 @@ public class SignUp extends Fragment implements View.OnClickListener {
 
     EditText in_email, in_password, in_re_password;
     Button sign_up;
+    TextView forgot;
 
     public SignUp() { }
 
@@ -33,7 +35,19 @@ public class SignUp extends Fragment implements View.OnClickListener {
         in_password = view.findViewById(R.id.password);
         in_re_password = view.findViewById(R.id.repeat_password);
         sign_up = view.findViewById(R.id.signup);
+        forgot = view.findViewById(R.id.forgot_password);
+
         sign_up.setOnClickListener(this);
+        forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragmentContainer, new ForgotPassword());
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
 
         return view;
     }
@@ -49,11 +63,14 @@ public class SignUp extends Fragment implements View.OnClickListener {
         else if (re_password.isEmpty()) new ErrorDialogs(getContext()).getMissingRepeatPasswordSignUp();
         else if (!password.equals(re_password)) new ErrorDialogs(getContext()).getMismatchPasswordsSignUp();
         else {
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.fragmentContainer, new Panels());
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.addToBackStack(null);
-            ft.commit();
+            FragmentTransaction ft = null;
+            if (getFragmentManager() != null) {
+                ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragmentContainer, new Panels());
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
             Account account = new Account(getContext());
             account.createAccount(email,password);
         }
