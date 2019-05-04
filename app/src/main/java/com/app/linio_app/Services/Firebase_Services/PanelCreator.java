@@ -1,0 +1,83 @@
+package com.app.linio_app.Services.Firebase_Services;
+
+import android.content.Context;
+import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.app.linio_app.Adapters.PanelsAdapter;
+import com.app.linio_app.Models.PanelsModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+public class PanelCreator {
+
+    private DatabaseReference database;
+    private FirebaseAuth auth;
+    private ArrayList<PanelsModel> panelsModel = new ArrayList<>();
+    private ListView listView;
+    private Context context;
+    private PanelsAdapter panelsAdapter;
+
+    public PanelCreator(DatabaseReference database,Context context, ListView listView) {
+        this.database = database;
+        this.context = context;
+        this.listView = listView;
+        this.retrieve();
+    }
+
+    public Boolean save(PanelsModel panelsModel) {
+        auth = FirebaseAuth.getInstance();
+        boolean saved;
+        if (panelsModel == null) saved = false;
+        else {
+            try {
+                database.child("panels/" + auth.getUid()).push().setValue(panelsModel);
+                saved = true;
+            }
+            catch (DatabaseException e) {
+                e.printStackTrace();
+                saved = false;
+            }
+        }
+        return saved;
+    }
+
+    public ArrayList<PanelsModel> retrieve() {
+        auth = FirebaseAuth.getInstance();
+        database.child("panels/" + auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                panelsModel.clear();
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        PanelsModel pMod = ds.getValue(PanelsModel.class);
+                        panelsModel.add(pMod);
+                    }
+                    panelsAdapter = new PanelsAdapter(context,panelsModel);
+                    listView.setAdapter(panelsAdapter);
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            listView.smoothScrollToPosition(panelsModel.size());
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(context,"Error" + databaseError.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+        return panelsModel;
+    }
+
+}

@@ -20,6 +20,7 @@ import com.app.linio_app.Dialogs.CreatePanelDialog;
 import com.app.linio_app.Models.PanelsModel;
 import com.app.linio_app.R;
 
+import com.app.linio_app.Services.Firebase_Services.PanelCreator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,64 +34,8 @@ import java.util.ArrayList;
 
 public class Panels extends Fragment implements View.OnClickListener {
 
-    public class FirebaseHelper {
-        DatabaseReference db;
-        Boolean saved;
-        ArrayList<PanelsModel> panelsModel = new ArrayList<>();
-        ListView mListView;
-        Context c;
-        public FirebaseHelper(DatabaseReference db,Context c, ListView mListView) {
-            this.db = db;
-            this.c = c;
-            this.mListView = mListView;
-            this.retrieve();
-        }
-        public Boolean save(PanelsModel panelsModel) {
-            if (panelsModel == null) saved = false;
-            else {
-                try {
-                    db.child("panels/" + auth.getUid()).push().setValue(panelsModel);
-                    saved = true;
-                }
-                catch (DatabaseException e) {
-                    e.printStackTrace();
-                    saved = false;
-                }
-            }
-            return saved;
-        }
-
-        public ArrayList<PanelsModel> retrieve() {
-            db.child("panels/" + auth.getUid()).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    panelsModel.clear();
-                    if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
-                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                            PanelsModel pMod = ds.getValue(PanelsModel.class);
-                            panelsModel.add(pMod);
-                        }
-                        panelsAdapter = new PanelsAdapter(c,panelsModel);
-                        mListView.setAdapter(panelsAdapter);
-                        new Handler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mListView.smoothScrollToPosition(panelsModel.size());
-                            }
-                        });
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(c,"Error" + databaseError.getMessage(),Toast.LENGTH_LONG).show();
-                }
-            });
-            return panelsModel;
-        }
-    }
     DatabaseReference db;
-    FirebaseHelper helper;
+    PanelCreator panelCreator;
     PanelsAdapter panelsAdapter;
     ListView panels;
     EditText title;
@@ -107,7 +52,7 @@ public class Panels extends Fragment implements View.OnClickListener {
         panels = view.findViewById(R.id.panels_list);
         auth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance().getReference();
-        helper = new FirebaseHelper(db,getContext(),panels);
+        panelCreator = new PanelCreator(db,getContext(),panels);
         FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.add);
         fab.setOnClickListener(this);
 
@@ -137,9 +82,9 @@ public class Panels extends Fragment implements View.OnClickListener {
                 PanelsModel panelsModel = new PanelsModel();
                 panelsModel.setTitle(finalTitle);
                 if (finalTitle != null && finalTitle.length() > 0) {
-                    if (helper.save(panelsModel)) {
+                    if (panelCreator.save(panelsModel)) {
                         title.setText("");
-                        ArrayList<PanelsModel> fetchedData = helper.retrieve();
+                        ArrayList<PanelsModel> fetchedData = panelCreator.retrieve();
                         panelsAdapter = new PanelsAdapter(getContext(),fetchedData);
                         panels.setAdapter(panelsAdapter);
                         panels.smoothScrollToPosition(fetchedData.size());
