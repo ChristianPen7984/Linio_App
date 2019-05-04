@@ -10,7 +10,6 @@ package com.app.linio_app.Dialogs;
         import android.widget.EditText;
 
         import com.app.linio_app.R;
-        import com.app.linio_app.Services.Firebase_Services.PanelCreator;
 
 public class CreatePanelDialog extends AppCompatDialogFragment {
     private EditText title;
@@ -35,8 +34,7 @@ public class CreatePanelDialog extends AppCompatDialogFragment {
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        PanelCreator panelCreator = new PanelCreator(getContext());
-                        panelCreator.createPanel(title.getText().toString());
+
                     }
                 });
 

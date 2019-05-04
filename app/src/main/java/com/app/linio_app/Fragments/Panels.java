@@ -1,24 +1,100 @@
 package com.app.linio_app.Fragments;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import com.app.linio_app.Adapters.PanelsAdapter;
 import com.app.linio_app.Dialogs.CreatePanelDialog;
+import com.app.linio_app.Models.PanelsModel;
 import com.app.linio_app.R;
+
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
 
 public class Panels extends Fragment implements View.OnClickListener {
 
-    FloatingActionButton add;
+    public class FirebaseHelper {
+        DatabaseReference db;
+        Boolean saved;
+        ArrayList<PanelsModel> panelsModel = new ArrayList<>();
+        ListView mListView;
+        Context c;
+        public FirebaseHelper(DatabaseReference db,Context c, ListView mListView) {
+            this.db = db;
+            this.c = c;
+            this.mListView = mListView;
+            this.retrieve();
+        }
+        public Boolean save(PanelsModel panelsModel) {
+            if (panelsModel == null) saved = false;
+            else {
+                try {
+                    db.child("panels/" + auth.getUid()).push().setValue(panelsModel);
+                    saved = true;
+                }
+                catch (DatabaseException e) {
+                    e.printStackTrace();
+                    saved = false;
+                }
+            }
+            return saved;
+        }
 
+        public ArrayList<PanelsModel> retrieve() {
+            db.child("panels/" + auth.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    panelsModel.clear();
+                    if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            PanelsModel pMod = ds.getValue(PanelsModel.class);
+                            panelsModel.add(pMod);
+                        }
+                        panelsAdapter = new PanelsAdapter(c,panelsModel);
+                        mListView.setAdapter(panelsAdapter);
+                        new Handler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mListView.smoothScrollToPosition(panelsModel.size());
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(c,"Error" + databaseError.getMessage(),Toast.LENGTH_LONG).show();
+                }
+            });
+            return panelsModel;
+        }
+    }
+    DatabaseReference db;
+    FirebaseHelper helper;
+    PanelsAdapter panelsAdapter;
+    ListView panels;
+    EditText title;
     FirebaseAuth auth;
-    DatabaseReference database;
 
     public Panels() { }
 
@@ -28,12 +104,12 @@ public class Panels extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_panels, container, false);
 
-        add = view.findViewById(R.id.add);
-
-        add.setOnClickListener(this);
-
+        panels = view.findViewById(R.id.panels_list);
         auth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance().getReference();
+        db = FirebaseDatabase.getInstance().getReference();
+        helper = new FirebaseHelper(db,getContext(),panels);
+        FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.add);
+        fab.setOnClickListener(this);
 
         return view;
     }
@@ -42,15 +118,39 @@ public class Panels extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add:
+                panels.smoothScrollToPosition(4);
                 showCreatePanelDialog();
                 break;
         }
     }
 
     private void showCreatePanelDialog() {
-        CreatePanelDialog createPanelDialog = new CreatePanelDialog();
-        if (getFragmentManager() != null) {
-            createPanelDialog.show(getFragmentManager(),"dialog");
-        }
+        Dialog d = new Dialog(getContext());
+        d.setTitle("Save to Firebase");
+        d.setContentView(R.layout.add_panel_dialog);
+        title = d.findViewById(R.id.title);
+        Button save = d.findViewById(R.id.save);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String finalTitle = title.getText().toString();
+                PanelsModel panelsModel = new PanelsModel();
+                panelsModel.setTitle(finalTitle);
+                if (finalTitle != null && finalTitle.length() > 0) {
+                    if (helper.save(panelsModel)) {
+                        title.setText("");
+                        ArrayList<PanelsModel> fetchedData = helper.retrieve();
+                        panelsAdapter = new PanelsAdapter(getContext(),fetchedData);
+                        panels.setAdapter(panelsAdapter);
+                        panels.smoothScrollToPosition(fetchedData.size());
+                    }
+                } else {
+                    Toast.makeText(getContext(),"Empty Name",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        d.show();
+
     }
+
 }
