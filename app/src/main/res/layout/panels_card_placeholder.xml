@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardElevation="10dp">
+    app:cardElevation="10dp"
+    app:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="40dp"
+        android:padding="30dp"
         android:background="@drawable/card_outline">
 
         <TextView
@@ -23,7 +24,7 @@
             android:layout_marginEnd="20dp"
             android:hint="@string/panel_title_placeholder"
             android:textColor="@color/colorAccent"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:gravity="center"/>
     </RelativeLayout>
 

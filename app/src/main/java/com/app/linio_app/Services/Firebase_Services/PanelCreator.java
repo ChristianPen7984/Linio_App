@@ -1,13 +1,13 @@
 package com.app.linio_app.Services.Firebase_Services;
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.app.linio_app.Adapters.PanelsAdapter;
 import com.app.linio_app.Models.PanelsModel;
+import com.app.linio_app.Services.ErrorDialogs;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PanelCreator {
 
@@ -43,11 +44,10 @@ public class PanelCreator {
                 saved = true;
             }
             catch (DatabaseException e) {
-                e.printStackTrace();
+                new ErrorDialogs(context).getFailedPanelCreation();
                 saved = false;
             }
-        }
-        return saved;
+        } return saved;
     }
 
     public ArrayList<PanelsModel> retrieve() {
@@ -62,13 +62,8 @@ public class PanelCreator {
                         panelsModel.add(pMod);
                     }
                     panelsAdapter = new PanelsAdapter(context,panelsModel);
+                    Collections.reverse(panelsModel);
                     listView.setAdapter(panelsAdapter);
-                    new Handler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            listView.smoothScrollToPosition(panelsModel.size());
-                        }
-                    });
                 }
             }
 

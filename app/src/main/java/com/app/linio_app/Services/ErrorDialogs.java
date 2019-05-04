@@ -66,4 +66,9 @@ public class ErrorDialogs {
     public void getFailedPasswordReset() {
         dialogTemplate("Unable to reset password","Could not locate email");
     }
+
+    public void getFailedPanelCreation() {
+        dialogTemplate("Unable to create panel","Data could not be saved");
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.app.linio_app.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,20 +39,21 @@ public class PanelsAdapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint({"ViewHolder", "InflateParams"})
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.panels_card_placeholder,null);
+    public View getView(int position, View view, ViewGroup parent) {
+        view = LayoutInflater.from(context).inflate(R.layout.panels_card_placeholder,null);
         TextView title = view.findViewById(R.id.title);
 
         final PanelsModel panelsModel = (PanelsModel)this.getItem(position);
         title.setText(panelsModels.get(position).getTitle());
 
-//        convertView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(context,panelsModel.getTitle(),Toast.LENGTH_LONG).show();
-//            }
-//        });
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context,panelsModel.getTitle(),Toast.LENGTH_LONG).show();
+            }
+        });
 
         return view;
     }
