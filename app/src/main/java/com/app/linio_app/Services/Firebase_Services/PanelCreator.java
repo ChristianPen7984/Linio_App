@@ -6,7 +6,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.app.linio_app.Adapters.PanelsAdapter;
+import com.app.linio_app.Models.Complete;
+import com.app.linio_app.Models.InProgress;
 import com.app.linio_app.Models.PanelsModel;
+import com.app.linio_app.Models.Queue;
 import com.app.linio_app.Services.ErrorDialogs;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;

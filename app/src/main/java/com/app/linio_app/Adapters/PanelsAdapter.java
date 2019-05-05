@@ -2,6 +2,9 @@ package com.app.linio_app.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +12,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.linio_app.Fragments.Panel;
+import com.app.linio_app.Fragments.Panels;
 import com.app.linio_app.Models.PanelsModel;
 import com.app.linio_app.R;
 
@@ -52,6 +57,8 @@ public class PanelsAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context,panelsModel.getTitle(),Toast.LENGTH_LONG).show();
+                FragmentTransaction ft = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragmentContainer, new Panel()).addToBackStack(null).commit();
             }
         });
 

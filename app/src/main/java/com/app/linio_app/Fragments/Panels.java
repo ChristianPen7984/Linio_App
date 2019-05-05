@@ -13,7 +13,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.app.linio_app.Adapters.PanelsAdapter;
+import com.app.linio_app.Models.Complete;
+import com.app.linio_app.Models.InProgress;
 import com.app.linio_app.Models.PanelsModel;
+import com.app.linio_app.Models.Queue;
 import com.app.linio_app.R;
 import com.app.linio_app.Services.Firebase_Services.PanelCreator;
 import com.google.firebase.auth.FirebaseAuth;
@@ -78,7 +81,6 @@ public class Panels extends Fragment implements View.OnClickListener {
                     @Override public void onClick(DialogInterface dialog, int which) {
                         String finalTitle = title.getText().toString();
                         PanelsModel panelsModel = new PanelsModel();
-                        panelsModel.setTitle(finalTitle);
                         if (finalTitle.length() > 0) {
                             if (panelCreator.save(panelsModel)) {
                                 title.setText("");
