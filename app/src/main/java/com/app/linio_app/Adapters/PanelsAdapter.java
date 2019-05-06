@@ -60,9 +60,9 @@ public class PanelsAdapter extends BaseAdapter {
                 FragmentTransaction ft = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
                 Bundle bundle = new Bundle();
                 bundle.putString("panel",panelsModel.getTitle());
-                QueueBoard queueBoard = new QueueBoard();
-                queueBoard.setArguments(bundle);
-                ft.replace(R.id.fragmentContainer, queueBoard).addToBackStack(null).commit();
+                Panel panels = new Panel();
+                panels.setArguments(bundle);
+                ft.replace(R.id.fragmentContainer, panels).addToBackStack(null).commit();
             }
         });
 

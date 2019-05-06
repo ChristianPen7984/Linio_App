@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.app.linio_app.Adapters.PanelsAdapter;
 import com.app.linio_app.Adapters.QueueAdapter;
@@ -37,6 +38,8 @@ public class QueueBoard extends Fragment implements View.OnClickListener {
 
     FirebaseAuth auth;
     DatabaseReference database;
+
+    String panel;
 
     public QueueBoard() { }
 
@@ -71,7 +74,7 @@ public class QueueBoard extends Fragment implements View.OnClickListener {
     private String getPanelContext() {
         final Bundle bundle = this.getArguments();
         String title = "";
-        if (bundle != null) title = bundle.getString("panel");
+        if (bundle != null) title = bundle.getString("panelTitle");
         return title;
     }
 
