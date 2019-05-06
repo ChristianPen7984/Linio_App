@@ -7,10 +7,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.app.linio_app.Adapters.PanelsAdapter;
+import com.app.linio_app.Adapters.QueueAdapter;
 import com.app.linio_app.Models.PanelsModel;
+import com.app.linio_app.Models.QueueModel;
 import com.app.linio_app.Services.ErrorDialogs;
 import com.google.firebase.auth.FirebaseAuth;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
@@ -20,29 +21,31 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class PanelCreator {
+public class QueueCreator {
 
     private DatabaseReference database;
     private FirebaseAuth auth;
-    private ArrayList<PanelsModel> panelsModel = new ArrayList<>();
     private ListView listView;
     private Context context;
-    private PanelsAdapter panelsAdapter;
+    private ArrayList<PanelsModel> panelsModel = new ArrayList<>();
+    private QueueAdapter queueAdapter;
 
-    public PanelCreator(DatabaseReference database,Context context, ListView listView) {
+    public QueueCreator(DatabaseReference database,Context context, ListView listView,
+                        String panel) {
         this.database = database;
         this.context = context;
         this.listView = listView;
-        this.retrieve();
+        retrieve(panel);
     }
 
-    public Boolean save(PanelsModel panelsModel,String title) {
+    public Boolean save(PanelsModel panelsModel,String panel, String title) {
         auth = FirebaseAuth.getInstance();
         boolean saved;
         if (panelsModel == null) saved = false;
         else {
             try {
-                database.child("panels/" + auth.getUid()).child(title).setValue(panelsModel);
+                database.child("queue/" + auth.getUid())
+                        .child(panel).child(title).setValue(panelsModel);
                 saved = true;
             }
             catch (DatabaseException e) {
@@ -52,9 +55,9 @@ public class PanelCreator {
         } return saved;
     }
 
-    public ArrayList<PanelsModel> retrieve() {
+    public ArrayList<PanelsModel> retrieve(String panel) {
         auth = FirebaseAuth.getInstance();
-        database.child("panels/" + auth.getUid()).addValueEventListener(new ValueEventListener() {
+        database.child("queue/" + auth.getUid()).child(panel).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 panelsModel.clear();
@@ -63,15 +66,15 @@ public class PanelCreator {
                         PanelsModel pMod = ds.getValue(PanelsModel.class);
                         panelsModel.add(pMod);
                     }
-                    panelsAdapter = new PanelsAdapter(context,panelsModel);
+                    queueAdapter = new QueueAdapter(context,panelsModel);
                     Collections.reverse(panelsModel);
-                    listView.setAdapter(panelsAdapter);
+                    listView.setAdapter(queueAdapter);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(context,"Error" + databaseError.getMessage(),Toast.LENGTH_LONG).show();
+
             }
         });
         return panelsModel;

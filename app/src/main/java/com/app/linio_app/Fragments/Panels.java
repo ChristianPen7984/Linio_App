@@ -1,6 +1,7 @@
 package com.app.linio_app.Fragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,10 +14,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.app.linio_app.Adapters.PanelsAdapter;
-import com.app.linio_app.Models.Complete;
-import com.app.linio_app.Models.InProgress;
 import com.app.linio_app.Models.PanelsModel;
-import com.app.linio_app.Models.Queue;
+import com.app.linio_app.Models.QueueModel;
 import com.app.linio_app.R;
 import com.app.linio_app.Services.Firebase_Services.PanelCreator;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,7 +36,6 @@ public class Panels extends Fragment implements View.OnClickListener {
 
     public Panels() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,7 +80,8 @@ public class Panels extends Fragment implements View.OnClickListener {
                         String finalTitle = title.getText().toString();
                         PanelsModel panelsModel = new PanelsModel();
                         if (finalTitle.length() > 0) {
-                            if (panelCreator.save(panelsModel)) {
+                            panelsModel.setTitle(finalTitle);
+                            if (panelCreator.save(panelsModel,finalTitle)) {
                                 title.setText("");
                                 ArrayList<PanelsModel> fetchedData = panelCreator.retrieve();
                                 panelsAdapter = new PanelsAdapter(getContext(), fetchedData);

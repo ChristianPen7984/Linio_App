@@ -2,6 +2,7 @@ package com.app.linio_app.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.linio_app.Fragments.Panel;
-import com.app.linio_app.Fragments.Panels;
+import com.app.linio_app.Fragments.QueueBoard;
 import com.app.linio_app.Models.PanelsModel;
 import com.app.linio_app.R;
 
@@ -51,14 +52,17 @@ public class PanelsAdapter extends BaseAdapter {
         TextView title = view.findViewById(R.id.title);
 
         final PanelsModel panelsModel = (PanelsModel)this.getItem(position);
-        title.setText(panelsModels.get(position).getTitle());
+        title.setText(panelsModel.getTitle());
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,panelsModel.getTitle(),Toast.LENGTH_LONG).show();
                 FragmentTransaction ft = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fragmentContainer, new Panel()).addToBackStack(null).commit();
+                Bundle bundle = new Bundle();
+                bundle.putString("panel",panelsModel.getTitle());
+                QueueBoard queueBoard = new QueueBoard();
+                queueBoard.setArguments(bundle);
+                ft.replace(R.id.fragmentContainer, queueBoard).addToBackStack(null).commit();
             }
         });
 

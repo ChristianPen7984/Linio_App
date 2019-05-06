@@ -27,4 +27,6 @@
     <string name="remove">Remove</string>
     <string name="add">Add</string>
     <string name="description_placeholder">Description</string>
+    <string name="queue">Queue</string>
+    <string name="add_task">ADD TASK</string>
 </resources>

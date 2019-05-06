@@ -1,13 +1,11 @@
 package com.app.linio_app.Models;
 
-import java.util.ArrayList;
-
 public class PanelsModel {
 
     private String title;
-    private ArrayList<Queue> queue_board;
-    private ArrayList<InProgress> inprogess_board;
-    private ArrayList<Complete> complete_board;
+    private QueueModel queue_board;
+    private InProgressModel inProgressModel;
+    private CompleteModel completeModel;
 
     public PanelsModel() { }
 
@@ -19,27 +17,28 @@ public class PanelsModel {
     public void setTitle(String title) {
         this.title = title;
     }
-    public ArrayList<Queue> getQueue_board() {
+
+    public QueueModel getQueue_board() {
         return queue_board;
     }
 
-    public void setQueue_board(ArrayList<Queue> queue_board) {
+    public void setQueue_board(QueueModel queue_board) {
         this.queue_board = queue_board;
     }
 
-    public ArrayList<InProgress> getInprogess_board() {
-        return inprogess_board;
+    public InProgressModel getInProgressModel() {
+        return inProgressModel;
     }
 
-    public void setInprogess_board(ArrayList<InProgress> inprogess_board) {
-        this.inprogess_board = inprogess_board;
+    public void setInProgressModel(InProgressModel inProgressModel) {
+        this.inProgressModel = inProgressModel;
     }
 
-    public ArrayList<Complete> getComplete_board() {
-        return complete_board;
+    public CompleteModel getCompleteModel() {
+        return completeModel;
     }
 
-    public void setComplete_board(ArrayList<Complete> complete_board) {
-        this.complete_board = complete_board;
+    public void setCompleteModel(CompleteModel completeModel) {
+        this.completeModel = completeModel;
     }
 }
