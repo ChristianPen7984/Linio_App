@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/moveQueue" android:title="@string/move_to_queue" />
     <item android:id="@+id/moveInProgress" android:title="@string/move_to_in_progress" />
 </menu>

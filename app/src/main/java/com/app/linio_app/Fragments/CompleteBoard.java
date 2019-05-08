@@ -86,27 +86,17 @@ public class CompleteBoard extends Fragment implements View.OnCreateContextMenuL
         final String panel = getPanelContext();
         ArrayList<PanelsModel> fetchedData = tasksServices.retrieve(panel);
         switch (item.getItemId()) {
-            case R.id.moveQueue:
-                PanelsModel panelsModelToQueue = setData(fetchedData,info);
-                boardSwapper.moveFromCompleteToQueue(panelsModelToQueue,fetchedData.get(info.position).getCompleteModel(),panel,
-                        fetchedData.get(info.position).getCompleteModel().getTitle());
-                return true;
             case R.id.moveInProgress:
-                PanelsModel panelsModelToInProgress = setData(fetchedData,info);
-                boardSwapper.moveFromCompleteToInProgress(panelsModelToInProgress,fetchedData.get(info.position).getCompleteModel(),panel,
+                String title = fetchedData.get(info.position).getCompleteModel().getTitle();
+                String description = fetchedData.get(info.position).getCompleteModel().getDesc();
+                completeModel.setTitle(title); completeModel.setDesc(description);
+                PanelsModel panelsModel = new PanelsModel(); panelsModel.setCompleteModel(completeModel);
+                boardSwapper.moveFromCompleteToInProgress(panelsModel,fetchedData.get(info.position).getCompleteModel(),panel,
                         fetchedData.get(info.position).getCompleteModel().getTitle());
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
-    }
-
-    private PanelsModel setData(ArrayList<PanelsModel> fetchedData, AdapterView.AdapterContextMenuInfo info) {
-        String title = fetchedData.get(info.position).getCompleteModel().getTitle();
-        String description = fetchedData.get(info.position).getCompleteModel().getDesc();
-        completeModel.setTitle(title); completeModel.setDesc(description);
-        PanelsModel panelsModel = new PanelsModel(); panelsModel.setCompleteModel(completeModel);
-        return panelsModel;
     }
 
 }

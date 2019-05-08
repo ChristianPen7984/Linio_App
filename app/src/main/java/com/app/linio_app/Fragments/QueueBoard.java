@@ -131,27 +131,16 @@ public class QueueBoard extends Fragment implements View.OnClickListener, View.O
         ArrayList<PanelsModel> fetchedData = tasksServices.retrieve(panel);
         switch (item.getItemId()) {
             case R.id.moveInProgress:
-                PanelsModel panelsModelToInProgress = setData(fetchedData,info);
-                boardSwapper.moveFromQueueToInProgress(panelsModelToInProgress,fetchedData.get(info.position).getQueue_board(),panel,
-                        fetchedData.get(info.position).getQueue_board().getTitle());
-                return true;
-            case R.id.moveComplete:
-                PanelsModel panelsModelToComplete = setData(fetchedData,info);
-                boardSwapper.moveFromQueueToComplete(panelsModelToComplete,fetchedData.get(info.position).getQueue_board(),panel,
+                String title = fetchedData.get(info.position).getQueue_board().getTitle();
+                String description = fetchedData.get(info.position).getQueue_board().getDesc();
+                queueModel.setTitle(title); queueModel.setDesc(description);
+                PanelsModel panelsModel = new PanelsModel(); panelsModel.setQueue_board(queueModel);
+                boardSwapper.moveFromQueueToInProgress(panelsModel,fetchedData.get(info.position).getQueue_board(),panel,
                         fetchedData.get(info.position).getQueue_board().getTitle());
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
-    }
-
-    private PanelsModel setData(ArrayList<PanelsModel> fetchedData,
-                                AdapterView.AdapterContextMenuInfo info) {
-        String title = fetchedData.get(info.position).getQueue_board().getTitle();
-        String description = fetchedData.get(info.position).getQueue_board().getDesc();
-        queueModel.setTitle(title); queueModel.setDesc(description);
-        PanelsModel panelsModel = new PanelsModel(); panelsModel.setQueue_board(queueModel);
-        return panelsModel;
     }
 
 }

@@ -35,19 +35,6 @@ public class BoardSwapper {
         return saved;
     }
 
-    public Boolean moveFromQueueToComplete(PanelsModel panelsModel, QueueModel queueModel, String panel, String title) {
-        auth = FirebaseAuth.getInstance();
-        boolean saved = false;
-        if (panelsModel.getQueue_board() != null) {
-            try {
-                database.child("queue/" + auth.getUid()).child(panel).child(title).removeValue();
-                database.child("complete/" + auth.getUid()).child(panel).child(title).setValue(setCompleteFromQueue(queueModel));
-                saved = true;
-            } catch (DatabaseException e) { new ErrorDialogs(context).getFailedPanelCreation(); }
-        }
-        return saved;
-    }
-
     public Boolean moveFromInProgressToQueue(PanelsModel panelsModel, InProgressModel inProgressModel, String panel, String title) {
         auth = FirebaseAuth.getInstance();
         boolean saved = false;
@@ -68,19 +55,6 @@ public class BoardSwapper {
             try {
                 database.child("inprogress/" + auth.getUid()).child(panel).child(title).removeValue();
                 database.child("complete/" + auth.getUid()).child(panel).child(title).setValue(setCompleteFromInProgress(inProgressModel));
-                saved = true;
-            } catch (DatabaseException e) { new ErrorDialogs(context).getFailedPanelCreation(); }
-        }
-        return saved;
-    }
-
-    public Boolean moveFromCompleteToQueue(PanelsModel panelsModel, CompleteModel completeModel, String panel, String title) {
-        auth = FirebaseAuth.getInstance();
-        boolean saved = false;
-        if (panelsModel.getCompleteModel() != null) {
-            try {
-                database.child("complete/" + auth.getUid()).child(panel).child(title).removeValue();
-                database.child("queue/" + auth.getUid()).child(panel).child(title).setValue(setQueueFromComplete(completeModel));
                 saved = true;
             } catch (DatabaseException e) { new ErrorDialogs(context).getFailedPanelCreation(); }
         }
@@ -109,15 +83,6 @@ public class BoardSwapper {
         return panelsModel;
     }
 
-    private PanelsModel setCompleteFromQueue(QueueModel queueModel) {
-        PanelsModel panelsModel = new PanelsModel();
-        CompleteModel completeModel = new CompleteModel();
-        completeModel.setTitle(queueModel.getTitle());
-        completeModel.setDesc(queueModel.getDesc());
-        panelsModel.setCompleteModel(completeModel);
-        return panelsModel;
-    }
-
     private PanelsModel setQueueFromInProgress(InProgressModel inProgressModel) {
         PanelsModel panelsModel = new PanelsModel();
         QueueModel queueModel = new QueueModel();
@@ -133,15 +98,6 @@ public class BoardSwapper {
         completeModel.setTitle(inProgressModel.getTitle());
         completeModel.setDesc(inProgressModel.getDesc());
         panelsModel.setCompleteModel(completeModel);
-        return panelsModel;
-    }
-
-    private PanelsModel setQueueFromComplete(CompleteModel completeModel) {
-        PanelsModel panelsModel = new PanelsModel();
-        QueueModel queueModel = new QueueModel();
-        queueModel.setTitle(completeModel.getTitle());
-        queueModel.setDesc(completeModel.getDesc());
-        panelsModel.setQueue_board(queueModel);
         return panelsModel;
     }
 
