@@ -1,5 +1,6 @@
 package com.app.linio_app.Fragments;
 
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.ContextMenu;
@@ -11,8 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.app.linio_app.Adapters.InProgressAdapter;
-import com.app.linio_app.Adapters.QueueAdapter;
+import com.app.linio_app.Models.CompleteModel;
 import com.app.linio_app.Models.InProgressModel;
 import com.app.linio_app.Models.PanelsModel;
 import com.app.linio_app.Models.QueueModel;
@@ -25,38 +25,41 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class InProgressBoard extends Fragment implements View.OnCreateContextMenuListener {
+public class CompleteBoard extends Fragment implements View.OnCreateContextMenuListener {
 
-    ListView inprogresses;
+    ListView completes;
 
     FirebaseAuth auth;
     DatabaseReference database;
 
+    CompleteModel completeModel;
     InProgressModel inProgressModel;
     QueueModel queueModel;
 
     TasksServices tasksServices;
     BoardSwapper boardSwapper;
 
-    public InProgressBoard() { }
+    public CompleteBoard() { }
+
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_inprogress, container, false);
+        View view = inflater.inflate(R.layout.fragment_complete_board, container, false);
 
-        inprogresses = (ListView)view.findViewById(R.id.inprogresses);
+        completes = (ListView)view.findViewById(R.id.completes);
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference();
 
+        completeModel = new CompleteModel();
         inProgressModel = new InProgressModel();
         queueModel = new QueueModel();
 
-        tasksServices = new TasksServices(database,getContext(),inprogresses,getPanelContext(),"inprogress");
+        tasksServices = new TasksServices(database,getContext(),completes,getPanelContext(),"complete");
         boardSwapper = new BoardSwapper(database,getContext());
 
-        registerForContextMenu(inprogresses);
+        registerForContextMenu(completes);
 
         return view;
     }
@@ -64,7 +67,7 @@ public class InProgressBoard extends Fragment implements View.OnCreateContextMen
     private String getPanelContext() {
         final Bundle bundle = this.getArguments();
         String title = "";
-        if (bundle != null) title = bundle.getString("panelTitleInProgress");
+        if (bundle != null) title = bundle.getString("panelTitleComplete");
         return title;
     }
 
@@ -73,7 +76,7 @@ public class InProgressBoard extends Fragment implements View.OnCreateContextMen
                                     ContextMenu.ContextMenuInfo contextMenuInfo) {
         super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
         MenuInflater inflater = new MenuInflater(getContext());
-        inflater.inflate(R.menu.inprogress_actions,contextMenu);
+        inflater.inflate(R.menu.complete_actions,contextMenu);
         contextMenu.setHeaderTitle("Move to:");
     }
 
@@ -85,13 +88,13 @@ public class InProgressBoard extends Fragment implements View.OnCreateContextMen
         switch (item.getItemId()) {
             case R.id.moveQueue:
                 PanelsModel panelsModelToQueue = setData(fetchedData,info);
-                boardSwapper.moveFromInProgressToQueue(panelsModelToQueue,fetchedData.get(info.position).getInProgressModel(),panel,
-                        fetchedData.get(info.position).getInProgressModel().getTitle());
+                boardSwapper.moveFromCompleteToQueue(panelsModelToQueue,fetchedData.get(info.position).getCompleteModel(),panel,
+                        fetchedData.get(info.position).getCompleteModel().getTitle());
                 return true;
-            case R.id.moveComplete:
-                PanelsModel panelsModelToComplete = setData(fetchedData,info);
-                boardSwapper.moveFromInProgressToComplete(panelsModelToComplete,fetchedData.get(info.position).getInProgressModel(),panel,
-                        fetchedData.get(info.position).getInProgressModel().getTitle());
+            case R.id.moveInProgress:
+                PanelsModel panelsModelToInProgress = setData(fetchedData,info);
+                boardSwapper.moveFromCompleteToInProgress(panelsModelToInProgress,fetchedData.get(info.position).getCompleteModel(),panel,
+                        fetchedData.get(info.position).getCompleteModel().getTitle());
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -99,10 +102,11 @@ public class InProgressBoard extends Fragment implements View.OnCreateContextMen
     }
 
     private PanelsModel setData(ArrayList<PanelsModel> fetchedData, AdapterView.AdapterContextMenuInfo info) {
-        String inProgressTitle = fetchedData.get(info.position).getInProgressModel().getTitle();
-        String inProgressDescription = fetchedData.get(info.position).getInProgressModel().getDesc();
-        inProgressModel.setTitle(inProgressTitle); inProgressModel.setDesc(inProgressDescription);
-        PanelsModel panelsModel = new PanelsModel(); panelsModel.setInProgressModel(inProgressModel);
+        String title = fetchedData.get(info.position).getCompleteModel().getTitle();
+        String description = fetchedData.get(info.position).getCompleteModel().getDesc();
+        completeModel.setTitle(title); completeModel.setDesc(description);
+        PanelsModel panelsModel = new PanelsModel(); panelsModel.setCompleteModel(completeModel);
         return panelsModel;
     }
+
 }

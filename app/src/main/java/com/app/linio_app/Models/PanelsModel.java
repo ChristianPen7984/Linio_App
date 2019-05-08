@@ -1,14 +1,35 @@
 package com.app.linio_app.Models;
 
-public class PanelsModel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class PanelsModel implements Parcelable {
 
     private String title;
     private QueueModel queue_board;
-    private InProgressModel inProgressModel;
-    private CompleteModel completeModel;
+    private InProgressModel in_progress_board;
+    private CompleteModel complete_board;
 
     public PanelsModel() { }
 
+
+    protected PanelsModel(Parcel in) {
+        title = in.readString();
+    }
+
+    public static final Creator<PanelsModel> CREATOR = new Creator<PanelsModel>() {
+        @Override
+        public PanelsModel createFromParcel(Parcel in) {
+            return new PanelsModel(in);
+        }
+
+        @Override
+        public PanelsModel[] newArray(int size) {
+            return new PanelsModel[size];
+        }
+    };
 
     public String getTitle() {
         return title;
@@ -27,18 +48,28 @@ public class PanelsModel {
     }
 
     public InProgressModel getInProgressModel() {
-        return inProgressModel;
+        return in_progress_board;
     }
 
     public void setInProgressModel(InProgressModel inProgressModel) {
-        this.inProgressModel = inProgressModel;
+        this.in_progress_board = inProgressModel;
     }
 
     public CompleteModel getCompleteModel() {
-        return completeModel;
+        return complete_board;
     }
 
     public void setCompleteModel(CompleteModel completeModel) {
-        this.completeModel = completeModel;
+        this.complete_board = completeModel;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
     }
 }

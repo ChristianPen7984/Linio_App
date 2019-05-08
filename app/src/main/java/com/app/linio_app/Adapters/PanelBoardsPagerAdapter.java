@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.app.linio_app.Fragments.CompleteBoard;
 import com.app.linio_app.Fragments.InProgressBoard;
 import com.app.linio_app.Fragments.QueueBoard;
 
@@ -21,20 +22,30 @@ public class PanelBoardsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position)
         {
-            case 0: {
-                Bundle bundle = new Bundle();
+            case 0:
+                Bundle queueBundle = new Bundle();
                 QueueBoard queueBoard = new QueueBoard();
-                bundle.putString("panelTitle",panel);
-                queueBoard.setArguments(bundle);
+                queueBundle.putString("panelTitleQueue",panel);
+                queueBoard.setArguments(queueBundle);
                 return queueBoard;
-            }
-            case 1: return new InProgressBoard();
+            case 1:
+                Bundle inprogressBundle = new Bundle();
+                InProgressBoard inProgressBoard = new InProgressBoard();
+                inprogressBundle.putString("panelTitleInProgress",panel);
+                inProgressBoard.setArguments(inprogressBundle);
+                return inProgressBoard;
+            case 2:
+                Bundle completeBundle = new Bundle();
+                CompleteBoard completeBoard = new CompleteBoard();
+                completeBundle.putString("panelTitleComplete",panel);
+                completeBoard.setArguments(completeBundle);
+                return completeBoard;
         }
         return null;
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 }

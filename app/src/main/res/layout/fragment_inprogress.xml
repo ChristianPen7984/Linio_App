@@ -27,9 +27,9 @@
     </android.support.v7.widget.Toolbar>
 
     <ListView
-        android:id="@+id/panel_list"
+        android:id="@+id/inprogresses"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/panel_toolbar"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"

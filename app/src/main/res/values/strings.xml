@@ -29,4 +29,14 @@
     <string name="description_placeholder">Description</string>
     <string name="queue">Queue</string>
     <string name="add_task">ADD TASK</string>
+    <string name="task_placeholder">Task Placeholder...</string>
+    <string name="edit_description">Edit description...</string>
+    <string name="due_date_mm_dd_yyyy">Due Date: mm/dd/yyyy</string>
+    <string name="checklist">Checklist:</string>
+    <string name="subtask_placeholder">Subtask Placeholder...</string>
+    <string name="edit_task">Edit</string>
+    <string name="move_to_in_progress">In Progress</string>
+    <string name="move_to_complete">Complete</string>
+    <string name="remove_task">Remove</string>
+    <string name="move_to_queue">Queue</string>
 </resources>
