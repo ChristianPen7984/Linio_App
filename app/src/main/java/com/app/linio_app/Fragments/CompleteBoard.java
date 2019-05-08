@@ -89,7 +89,8 @@ public class CompleteBoard extends Fragment implements View.OnCreateContextMenuL
             case R.id.moveInProgress:
                 String title = fetchedData.get(info.position).getCompleteModel().getTitle();
                 String description = fetchedData.get(info.position).getCompleteModel().getDesc();
-                completeModel.setTitle(title); completeModel.setDesc(description);
+                String date = fetchedData.get(info.position).getCompleteModel().getDate();
+                completeModel.setTitle(title); completeModel.setDesc(description); completeModel.setDate(date);
                 PanelsModel panelsModel = new PanelsModel(); panelsModel.setCompleteModel(completeModel);
                 boardSwapper.moveFromCompleteToInProgress(panelsModel,fetchedData.get(info.position).getCompleteModel(),panel,
                         fetchedData.get(info.position).getCompleteModel().getTitle());

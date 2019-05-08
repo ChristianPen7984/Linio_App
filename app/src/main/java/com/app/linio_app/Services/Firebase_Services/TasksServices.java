@@ -59,7 +59,7 @@ public class TasksServices {
         } return saved;
     }
 
-    public ArrayList<PanelsModel> retrieve(String panel) {
+    public ArrayList<PanelsModel> retrieve(final String panel) {
         auth = FirebaseAuth.getInstance();
         if (target.equals("queue") || target.equals("inprogress") || target.equals("complete")) {
             database.child(target + "/" + auth.getUid()).child(panel).addValueEventListener(new ValueEventListener() {
@@ -71,7 +71,7 @@ public class TasksServices {
                             PanelsModel pMod = ds.getValue(PanelsModel.class);
                             panelsModel.add(pMod);
                         }
-                        setAdapter();
+                        setAdapter(panel);
                     }
                 }
 
@@ -84,20 +84,20 @@ public class TasksServices {
         return panelsModel;
     }
 
-    private void setAdapter() {
+    private void setAdapter(String panel) {
         switch (target) {
             case "queue":
-                QueueAdapter queueAdapter = new QueueAdapter(context, panelsModel);
+                QueueAdapter queueAdapter = new QueueAdapter(context, panelsModel,panel);
                 Collections.reverse(panelsModel);
                 listView.setAdapter(queueAdapter);
                 break;
             case "inprogress":
-                InProgressAdapter inProgressAdapter = new InProgressAdapter(context, panelsModel);
+                InProgressAdapter inProgressAdapter = new InProgressAdapter(context, panelsModel,panel);
                 Collections.reverse(panelsModel);
                 listView.setAdapter(inProgressAdapter);
                 break;
             case "complete":
-                CompleteAdapter completeAdapter = new CompleteAdapter(context, panelsModel);
+                CompleteAdapter completeAdapter = new CompleteAdapter(context, panelsModel,panel);
                 Collections.reverse(panelsModel);
                 listView.setAdapter(completeAdapter);
                 break;

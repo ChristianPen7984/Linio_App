@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -34,6 +35,7 @@ public class QueueBoard extends Fragment implements View.OnClickListener, View.O
     ImageButton add;
 
     EditText in_title, in_desc;
+    DatePicker datePicker;
 
     TasksServices tasksServices;
     BoardSwapper boardSwapper;
@@ -94,6 +96,7 @@ public class QueueBoard extends Fragment implements View.OnClickListener, View.O
         View createDialog = inflater.inflate(R.layout.add_board_dialog, null);
         in_title = createDialog.findViewById(R.id.title);
         in_desc = createDialog.findViewById(R.id.description);
+        datePicker = createDialog.findViewById(R.id.datePicker);
 
         builder.setView(createDialog)
                 .setTitle("Create Task")
@@ -103,11 +106,13 @@ public class QueueBoard extends Fragment implements View.OnClickListener, View.O
                     @Override public void onClick(DialogInterface dialog, int which) {
                         String finalTitle = in_title.getText().toString();
                         String finalDesc = in_desc.getText().toString();
-                        queueModel.setTitle(finalTitle); queueModel.setDesc(finalDesc);
+                        String finalDate = (datePicker.getMonth() + 1) + "/" +
+                                datePicker.getDayOfMonth() + "/" + datePicker.getYear();
+                        queueModel.setTitle(finalTitle); queueModel.setDesc(finalDesc); queueModel.setDate(finalDate);
                         PanelsModel panelsModel = new PanelsModel(); panelsModel.setQueue_board(queueModel);
                         if (tasksServices.save(panelsModel,panel,finalTitle)) {
                             ArrayList<PanelsModel> fetchedData = tasksServices.retrieve(panel);
-                            queueAdapter = new QueueAdapter(getContext(), fetchedData);
+                            queueAdapter = new QueueAdapter(getContext(), fetchedData, panel);
                             queues.setAdapter(queueAdapter);
                         }
                     }
@@ -133,7 +138,8 @@ public class QueueBoard extends Fragment implements View.OnClickListener, View.O
             case R.id.moveInProgress:
                 String title = fetchedData.get(info.position).getQueue_board().getTitle();
                 String description = fetchedData.get(info.position).getQueue_board().getDesc();
-                queueModel.setTitle(title); queueModel.setDesc(description);
+                String date = fetchedData.get(info.position).getQueue_board().getDate();
+                queueModel.setTitle(title); queueModel.setDesc(description); queueModel.setDate(date);
                 PanelsModel panelsModel = new PanelsModel(); panelsModel.setQueue_board(queueModel);
                 boardSwapper.moveFromQueueToInProgress(panelsModel,fetchedData.get(info.position).getQueue_board(),panel,
                         fetchedData.get(info.position).getQueue_board().getTitle());

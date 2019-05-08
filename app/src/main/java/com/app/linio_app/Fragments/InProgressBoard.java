@@ -99,9 +99,10 @@ public class InProgressBoard extends Fragment implements View.OnCreateContextMen
     }
 
     private PanelsModel setData(ArrayList<PanelsModel> fetchedData, AdapterView.AdapterContextMenuInfo info) {
-        String inProgressTitle = fetchedData.get(info.position).getInProgressModel().getTitle();
-        String inProgressDescription = fetchedData.get(info.position).getInProgressModel().getDesc();
-        inProgressModel.setTitle(inProgressTitle); inProgressModel.setDesc(inProgressDescription);
+        String title = fetchedData.get(info.position).getInProgressModel().getTitle();
+        String description = fetchedData.get(info.position).getInProgressModel().getDesc();
+        String date = fetchedData.get(info.position).getInProgressModel().getDate();
+        inProgressModel.setTitle(title); inProgressModel.setDesc(description); inProgressModel.setDate(date);
         PanelsModel panelsModel = new PanelsModel(); panelsModel.setInProgressModel(inProgressModel);
         return panelsModel;
     }

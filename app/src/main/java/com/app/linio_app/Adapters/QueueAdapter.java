@@ -1,6 +1,7 @@
 package com.app.linio_app.Adapters;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -27,10 +28,12 @@ public class QueueAdapter extends BaseAdapter implements View.OnCreateContextMen
 
     private Context context;
     private ArrayList<PanelsModel> panelsModels;
+    private String panel;
 
-    public QueueAdapter(Context context, ArrayList<PanelsModel> panelsModels) {
+    public QueueAdapter(Context context, ArrayList<PanelsModel> panelsModels, String panel) {
         this.context = context;
         this.panelsModels = panelsModels;
+        this.panel = panel;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class QueueAdapter extends BaseAdapter implements View.OnCreateContextMen
 
     @SuppressLint({"ViewHolder", "InflateParams"})
     @Override
-    public View getView(int position, View view, ViewGroup parent) {
+    public View getView(int position, View view, final ViewGroup parent) {
 
         view = LayoutInflater.from(context).inflate(R.layout.task_placeholder,null);
         TextView title = view.findViewById(R.id.task_title);
@@ -65,6 +68,7 @@ public class QueueAdapter extends BaseAdapter implements View.OnCreateContextMen
                 FragmentTransaction ft = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("task", panelsModel);
+                bundle.putString("panel",panel);
                 Task task = new Task();
                 task.setArguments(bundle);
                 ft.replace(R.id.fragmentContainer, task).addToBackStack(null).commit();

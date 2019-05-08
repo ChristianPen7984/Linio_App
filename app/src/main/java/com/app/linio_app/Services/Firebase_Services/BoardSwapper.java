@@ -79,6 +79,7 @@ public class BoardSwapper {
         InProgressModel inProgressModel = new InProgressModel();
         inProgressModel.setTitle(queueModel.getTitle());
         inProgressModel.setDesc(queueModel.getDesc());
+        inProgressModel.setDate(queueModel.getDate());
         panelsModel.setInProgressModel(inProgressModel);
         return panelsModel;
     }
@@ -88,6 +89,7 @@ public class BoardSwapper {
         QueueModel queueModel = new QueueModel();
         queueModel.setTitle(inProgressModel.getTitle());
         queueModel.setDesc(inProgressModel.getDesc());
+        queueModel.setDate(inProgressModel.getDate());
         panelsModel.setQueue_board(queueModel);
         return panelsModel;
     }
@@ -97,6 +99,7 @@ public class BoardSwapper {
         CompleteModel completeModel = new CompleteModel();
         completeModel.setTitle(inProgressModel.getTitle());
         completeModel.setDesc(inProgressModel.getDesc());
+        completeModel.setDate(inProgressModel.getDate());
         panelsModel.setCompleteModel(completeModel);
         return panelsModel;
     }
@@ -106,6 +109,7 @@ public class BoardSwapper {
         InProgressModel inProgressModel = new InProgressModel();
         inProgressModel.setTitle(completeModel.getTitle());
         inProgressModel.setDesc(completeModel.getDesc());
+        inProgressModel.setDate(completeModel.getDate());
         panelsModel.setInProgressModel(inProgressModel);
         return panelsModel;
     }

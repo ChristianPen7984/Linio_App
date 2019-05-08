@@ -22,10 +22,12 @@ public class InProgressAdapter extends BaseAdapter implements View.OnCreateConte
 
     private Context context;
     private ArrayList<PanelsModel> panelsModels;
+    private String panel;
 
-    public InProgressAdapter(Context context, ArrayList<PanelsModel> panelsModels) {
+    public InProgressAdapter(Context context, ArrayList<PanelsModel> panelsModels, String panel) {
         this.context = context;
         this.panelsModels = panelsModels;
+        this.panel = panel;
     }
 
     @Override
@@ -59,6 +61,7 @@ public class InProgressAdapter extends BaseAdapter implements View.OnCreateConte
                 FragmentTransaction ft = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("task", panelsModel);
+                bundle.putString("panel",panel);
                 Task task = new Task();
                 task.setArguments(bundle);
                 ft.replace(R.id.fragmentContainer, task).addToBackStack(null).commit();
