@@ -114,7 +114,11 @@ public class Task extends Fragment implements View.OnClickListener {
             description = panelsModel.getQueue_board().getDesc();
             date = panelsModel.getQueue_board().getDate();
         }
-        if (title != null) data.add(title); data.add(description); data.add(date);
+        if (title != null) {
+            data.add(title);
+            data.add(description);
+            data.add(date);
+        }
         return data;
     }
 
@@ -172,20 +176,23 @@ public class Task extends Fragment implements View.OnClickListener {
                 }).show();
     }
 
-    private Boolean checkTitleChange() {
+    private Boolean checkDataChanged() {
         boolean changed = false;
         if (panelsModel.getQueue_board() != null) {
-            if (!panelsModel.getQueue_board().getTitle().equals(task_title.getText().toString())) {
+            if ((!panelsModel.getQueue_board().getTitle().equals(task_title.getText().toString()))
+            || (!panelsModel.getQueue_board().getDesc().equals(description.getText().toString()))) {
                 changed = true;
             }
         }
         else if (panelsModel.getInProgressModel() != null) {
-            if (!panelsModel.getInProgressModel().getTitle().equals(task_title.getText().toString())) {
+            if ((!panelsModel.getInProgressModel().getTitle().equals(task_title.getText().toString()))
+                    || (!panelsModel.getInProgressModel().getDesc().equals(description.getText().toString()))) {
                 changed = true;
             }
         }
         else if (panelsModel.getCompleteModel() != null) {
-            if (!panelsModel.getCompleteModel().getTitle().equals(task_title.getText().toString())) {
+            if ((!panelsModel.getCompleteModel().getTitle().equals(task_title.getText().toString()))
+            || (!panelsModel.getCompleteModel().getDesc().equals(description.getText().toString())) ) {
                 changed = true;
             }
         }
@@ -194,7 +201,7 @@ public class Task extends Fragment implements View.OnClickListener {
 
     @Override
     public void onDestroy() {
-        if (checkTitleChange()) {
+        if (checkDataChanged()) {
             if (panelsModel.getQueue_board() != null) {
                 taskService.remove(panelsModel,panel,panelsModel.getQueue_board().getTitle());
                 panelsModel.getQueue_board().setTitle(task_title.getText().toString());
