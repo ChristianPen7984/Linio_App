@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class TasksServices {
 
@@ -88,17 +89,14 @@ public class TasksServices {
         switch (target) {
             case "queue":
                 QueueAdapter queueAdapter = new QueueAdapter(context, panelsModel,panel);
-                Collections.reverse(panelsModel);
                 listView.setAdapter(queueAdapter);
                 break;
             case "inprogress":
                 InProgressAdapter inProgressAdapter = new InProgressAdapter(context, panelsModel,panel);
-                Collections.reverse(panelsModel);
                 listView.setAdapter(inProgressAdapter);
                 break;
             case "complete":
                 CompleteAdapter completeAdapter = new CompleteAdapter(context, panelsModel,panel);
-                Collections.reverse(panelsModel);
                 listView.setAdapter(completeAdapter);
                 break;
         }

@@ -8,6 +8,8 @@ import java.io.Serializable;
 public class PanelsModel implements Parcelable {
 
     private String title;
+    private String created;
+    private String imageUrl;
     private QueueModel queue_board;
     private InProgressModel in_progress_board;
     private CompleteModel complete_board;
@@ -37,6 +39,22 @@ public class PanelsModel implements Parcelable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public QueueModel getQueue_board() {
