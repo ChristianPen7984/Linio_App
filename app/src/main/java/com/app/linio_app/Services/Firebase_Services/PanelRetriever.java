@@ -10,6 +10,7 @@ import com.app.linio_app.Models.PanelsModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
@@ -41,11 +42,13 @@ public class PanelRetriever {
                 panelsModel.clear();
                 if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        PanelsModel pMod = ds.getValue(PanelsModel.class);
-                        panelsModel.add(pMod);
+                        try {
+                            PanelsModel pMod = ds.getValue(PanelsModel.class);
+                            panelsModel.add(pMod);
+                        } catch (DatabaseException de) {
+                        }
                     }
                     panelsAdapter = new PanelsAdapter(context,panelsModel);
-                    Collections.reverse(panelsModel);
                     listView.setAdapter(panelsAdapter);
                 }
             }
@@ -57,4 +60,35 @@ public class PanelRetriever {
         });
         return panelsModel;
     }
+
+
+    public ArrayList<PanelsModel> retrievePanel(final String panel) {
+        auth = FirebaseAuth.getInstance();
+        database.child("panels/" + auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                panelsModel.clear();
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        try {
+                            PanelsModel pMod = ds.getValue(PanelsModel.class);
+                            if (pMod.getTitle().contains(panel)) {
+                                panelsModel.add(pMod);
+                            }
+                        } catch (DatabaseException de) {
+                        }
+                    }
+                    panelsAdapter = new PanelsAdapter(context,panelsModel);
+                    listView.setAdapter(panelsAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(context,"Error" + databaseError.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+        return panelsModel;
+    }
+
 }

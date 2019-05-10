@@ -68,7 +68,9 @@ public class ErrorDialogs {
     }
 
     public void getFailedPanelCreation() {
-        dialogTemplate("Unable to create panel","Data could not be saved");
+        dialogTemplate("Unable to create panel","Data could not be saved. " +
+                "This is a bug in the code I could not work out.  To avoid this, add a title  " +
+                "then upload image and immediately save. :)");
     }
 
 }

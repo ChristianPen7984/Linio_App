@@ -76,7 +76,7 @@ public class QueueBoard extends Fragment implements View.OnClickListener, View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add:
-                showCreatePanelDialog();
+                showCreateBoardDialog();
                 break;
         }
     }
@@ -88,7 +88,7 @@ public class QueueBoard extends Fragment implements View.OnClickListener, View.O
         return title;
     }
 
-    private void showCreatePanelDialog() {
+    private void showCreateBoardDialog() {
 
         final String panel = getPanelContext();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

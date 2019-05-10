@@ -28,7 +28,6 @@ public class TaskService {
     private DatabaseReference database;
     private FirebaseAuth auth;
     private Context context;
-    private ArrayList<PanelsModel> panelsModel = new ArrayList<>();
 
     private String target;
 
@@ -36,7 +35,6 @@ public class TaskService {
         this.database = database;
         this.context = context;
         this.target = target;
-//        retrieve(panel);
     }
 
     public Boolean save(PanelsModel panelsModel,String panel, String title) {
@@ -71,49 +69,5 @@ public class TaskService {
             }
         } return saved;
     }
-
-//    public ArrayList<PanelsModel> retrieve(final String panel) {
-//        auth = FirebaseAuth.getInstance();
-//        if (target.equals("queue") || target.equals("inprogress") || target.equals("complete")) {
-//            database.child(target + "/" + auth.getUid()).child(panel).addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                    panelsModel.clear();
-//                    if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
-//                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-//                            PanelsModel pMod = ds.getValue(PanelsModel.class);
-//                            panelsModel.add(pMod);
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                }
-//            });
-//        }
-//        return panelsModel;
-//    }
-
-//    private void setAdapter(String panel) {
-//        switch (target) {
-//            case "queue":
-//                QueueAdapter queueAdapter = new QueueAdapter(context, panelsModel,panel);
-//                Collections.reverse(panelsModel);
-//                listView.setAdapter(queueAdapter);
-//                break;
-//            case "inprogress":
-//                InProgressAdapter inProgressAdapter = new InProgressAdapter(context, panelsModel,panel);
-//                Collections.reverse(panelsModel);
-//                listView.setAdapter(inProgressAdapter);
-//                break;
-//            case "complete":
-//                CompleteAdapter completeAdapter = new CompleteAdapter(context, panelsModel,panel);
-//                Collections.reverse(panelsModel);
-//                listView.setAdapter(completeAdapter);
-//                break;
-//        }
-//    }
 
 }

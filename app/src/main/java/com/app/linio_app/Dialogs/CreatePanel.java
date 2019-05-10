@@ -25,6 +25,7 @@ import com.app.linio_app.Adapters.PanelsAdapter;
 import com.app.linio_app.Models.ImageModel;
 import com.app.linio_app.Models.PanelsModel;
 import com.app.linio_app.R;
+import com.app.linio_app.Services.ErrorDialogs;
 import com.app.linio_app.Services.Firebase_Services.ImageCreator;
 import com.app.linio_app.Services.Firebase_Services.PanelCreator;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,6 +37,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -93,14 +95,9 @@ public class CreatePanel extends AppCompatDialogFragment{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (count > 0) {
-                    uploadLogo.setEnabled(true);
-                }
-                else {
-                    uploadLogo.setEnabled(false);
-                }
+                if (count > 0) uploadLogo.setEnabled(true);
+                else uploadLogo.setEnabled(false);
             }
-
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -109,10 +106,7 @@ public class CreatePanel extends AppCompatDialogFragment{
         builder.setView(view)
                 .setTitle("Create Panel")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
+                    @Override public void onClick(DialogInterface dialog, int which) { }
                 })
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     @Override
@@ -154,9 +148,14 @@ public class CreatePanel extends AppCompatDialogFragment{
                         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                panelsModel.setImageUrl(uri.toString());
-                                panelCreator.save(panelsModel,title.getText().toString());
-                                title.setText("");
+                                try {
+                                    if (!panelsModel.getTitle().isEmpty()) {
+                                        panelsModel.setImageUrl(uri.toString());
+                                        panelCreator.save(panelsModel,title.getText().toString());
+                                        title.setText("");
+                                    }
+                                } catch (NullPointerException e) { new ErrorDialogs(getContext()).getFailedPanelCreation();
+                                }
                             }
                         });
 
