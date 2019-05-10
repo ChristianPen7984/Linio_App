@@ -41,7 +41,9 @@ public class About extends Fragment implements View.OnClickListener {
                 startActivity(emailIntent);
                 break;
             case R.id.projectLink:
-
+                Intent projectIntent = new Intent(Intent.ACTION_VIEW);
+                projectIntent.setData(Uri.parse("https://github.com/ChristianPen7984/Linio_App.git"));
+                startActivity(projectIntent);
                 break;
         }
     }

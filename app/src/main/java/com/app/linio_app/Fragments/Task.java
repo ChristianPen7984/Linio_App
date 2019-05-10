@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,9 +22,11 @@ import android.widget.Toast;
 import com.app.linio_app.Adapters.QueueAdapter;
 import com.app.linio_app.Models.PanelsModel;
 import com.app.linio_app.R;
+import com.app.linio_app.Services.Firebase_Services.TaskRemover;
 import com.app.linio_app.Services.Firebase_Services.TaskService;
 import com.app.linio_app.Services.Firebase_Services.TasksServices;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -36,6 +39,7 @@ public class Task extends Fragment implements View.OnClickListener {
     String panel;
 
     EditText task_title;
+    ImageButton remove;
     EditText description;
     Button dueDate;
 
@@ -49,6 +53,8 @@ public class Task extends Fragment implements View.OnClickListener {
     FirebaseAuth auth;
     DatabaseReference database;
 
+    TaskRemover taskRemover;
+
     public Task() { }
 
 
@@ -60,10 +66,12 @@ public class Task extends Fragment implements View.OnClickListener {
         panel = getPanelContext();
 
         task_title = view.findViewById(R.id.task_title);
+        remove = view.findViewById(R.id.remove);
         description = view.findViewById(R.id.description);
         dueDate = view.findViewById(R.id.dueDate);
 
         dueDate.setOnClickListener(this);
+        remove.setOnClickListener(this);
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference();
@@ -141,6 +149,9 @@ public class Task extends Fragment implements View.OnClickListener {
             case R.id.dueDate:
                 showDatePicker();
                 break;
+            case R.id.remove:
+                showRemovalWarning();
+                break;
         }
     }
 
@@ -197,6 +208,36 @@ public class Task extends Fragment implements View.OnClickListener {
             }
         }
         return changed;
+    }
+
+    private void showRemovalWarning() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View warning = inflater.inflate(R.layout.removal_warning, null);
+        TextView warningMessage = warning.findViewById(R.id.warningMessage);
+        if (panelsModel.getQueue_board() != null) { String message = "You are about to remove:  " + panelsModel.getQueue_board().getTitle(); warningMessage.setText(message); }
+        else if (panelsModel.getInProgressModel() != null) { String message = "You are about to remove:  " + panelsModel.getInProgressModel().getTitle(); warningMessage.setText(message); }
+        else if (panelsModel.getCompleteModel() != null) { String message = "You are about to remove:  " + panelsModel.getCompleteModel().getTitle(); warningMessage.setText(message); }
+        builder.setView(warning)
+        .setTitle("WARNING!")
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) { } })
+                .setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            if (panelsModel.getQueue_board() != null) {
+                                taskRemover = new TaskRemover(database, getContext(), "queue");
+                                taskRemover.remove(panelsModel, getPanelContext(), panelsModel.getQueue_board().getTitle());
+                            } else if (panelsModel.getInProgressModel() != null) {
+                                taskRemover = new TaskRemover(database, getContext(), "inprogress");
+                                taskRemover.remove(panelsModel, getPanelContext(), panelsModel.getInProgressModel().getTitle());
+                            } else if (panelsModel.getCompleteModel() != null) {
+                                taskRemover = new TaskRemover(database, getContext(), "complete");
+                                taskRemover.remove(panelsModel, getPanelContext(), panelsModel.getCompleteModel().getTitle());
+                            }
+                        } catch (DatabaseException e) { }
+                    }
+                }).show();
     }
 
     @Override

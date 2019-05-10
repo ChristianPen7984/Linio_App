@@ -9,22 +9,36 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:background="@drawable/card_outline">
+        android:background="@drawable/card_outline"
+        android:backgroundTint="#ffffff">
+
+
+        <Button
+            android:id="@+id/sideBox"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="-1dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:background="#c7c7c7"
+            android:clickable="false"
+            android:padding="20dp" />
 
         <TextView
             android:id="@+id/task_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="0dp"
+            android:layout_toEndOf="@+id/sideBox"
             android:hint="@string/task_placeholder"
             android:textColor="@color/colorAccent"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:gravity="center"/>
 
     </RelativeLayout>
