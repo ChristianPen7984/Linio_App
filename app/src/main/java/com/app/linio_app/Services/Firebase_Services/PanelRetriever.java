@@ -61,6 +61,7 @@ public class PanelRetriever {
         return panelsModel;
     }
 
+    // REDUNDANT! REDUNDANT! REDUNDANT! REDUNDANT! REDUNDANT! REDUNDANT! REDUNDANT!
 
     public ArrayList<PanelsModel> retrievePanel(final String panel) {
         auth = FirebaseAuth.getInstance();
@@ -72,13 +73,41 @@ public class PanelRetriever {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         try {
                             PanelsModel pMod = ds.getValue(PanelsModel.class);
-                            if (pMod.getTitle().contains(panel)) {
+                            if (pMod != null && pMod.getTitle().contains(panel)) {
                                 panelsModel.add(pMod);
                             }
-                        } catch (DatabaseException de) {
-                        }
+                        } catch (DatabaseException de) { }
                     }
                     panelsAdapter = new PanelsAdapter(context,panelsModel);
+                    listView.setAdapter(panelsAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(context,"Error" + databaseError.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+        return panelsModel;
+    }
+
+    // REDUNDANT! REDUNDANT! REDUNDANT! REDUNDANT! REDUNDANT! REDUNDANT! REDUNDANT!
+
+    public ArrayList<PanelsModel> retrieveReverse() {
+        auth = FirebaseAuth.getInstance();
+        database.child("panels/" + auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                panelsModel.clear();
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        try {
+                            PanelsModel pMod = ds.getValue(PanelsModel.class);
+                            panelsModel.add(pMod);
+                        } catch (DatabaseException de) { }
+                    }
+                    panelsAdapter = new PanelsAdapter(context,panelsModel);
+                    Collections.reverse(panelsModel);
                     listView.setAdapter(panelsAdapter);
                 }
             }

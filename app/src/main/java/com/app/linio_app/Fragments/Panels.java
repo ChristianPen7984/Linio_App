@@ -122,8 +122,10 @@ public class Panels extends Fragment implements View.OnClickListener,
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             case 1:
+                panelRetriever.retrieve();
                 break;
             case 2:
+                panelRetriever.retrieveReverse();
                 break;
         }
     }
