@@ -41,4 +41,13 @@
     <string name="move_to_queue">Queue</string>
     <string name="upload_icon">Upload Icon</string>
     <string name="change_icon">Change Icon</string>
+    <string name="future_updates_to_come">Future Updates To Come</string>
+    <string name="home_placeholder">HOME PLACEHOLDER...</string>
+    <string name="about">About Us</string>
+    <string name="who_is_linio">Who is...</string>
+    <string name="quote">A quote by Pablo Picasso states; “Our goals can only be reached through a vehicle of a plan, in which we must fervently believe, and upon which we must vigorously act. There is no other route to success” (Pogue, 2019). Having a well-rounded and conceptionally organized set of plans to analyze and define the scope of one’s future is undoubtably essential for a path to success and accomplishment. Here a Linio, our primary agenda is to provide users with the ability to seek out this effort by creating limitless task boards to organize one\'s schedule and become the most production individual possible!</string>
+    <string name="project_source">Project Source:</string>
+    <string name="have_any_questions">Have any questions?</string>
+    <string name="penrod_christian7984_gmail_com">penrod.christian7984@gmail.com</string>
+    <string name="https_github_com_christianpen7984_linio_app_git">https://github.com/ChristianPen7984/Linio_App.git</string>
 </resources>

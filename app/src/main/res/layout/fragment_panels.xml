@@ -13,7 +13,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
-        android:background="#FFF766"
+        android:background="@drawable/card_title"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
         <Spinner

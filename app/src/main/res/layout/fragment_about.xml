@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/question"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="31dp"
+            android:gravity="center"
+            android:paddingStart="20dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="0dp"
+            android:paddingBottom="20dp"
+            android:text="@string/who_is_linio"
+            android:textColor="@color/colorAccent"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="172dp"
+        android:layout_height="99dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="-50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toEndOf="@+id/question"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/card_title"
+        android:textSize="18sp"
+        android:padding="20dp"
+        android:textStyle="italic"
+        android:textColor="@color/colorAccent"
+        android:text="@string/quote" />
+
+    <TextView
+        android:id="@+id/checkMeOut"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/about"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/project_source"
+        android:textColor="@color/colorAccent"
+        android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/projectLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/about"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_toEndOf="@+id/checkMeOut"
+            android:text="@string/https_github_com_christianpen7984_linio_app_git"/>
+
+        <TextView
+            android:id="@+id/contactMe"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/checkMeOut"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="37dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
+            android:text="@string/have_any_questions"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/mailLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/projectLink"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
+            android:layout_toEndOf="@+id/contactMe"
+            android:text="@string/penrod_christian7984_gmail_com" />
+
+
+    </RelativeLayout>
+
+</ScrollView>

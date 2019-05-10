@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.app.linio_app.Fragments.About;
 import com.app.linio_app.Fragments.Home;
 import com.app.linio_app.Fragments.Login;
 import com.app.linio_app.Fragments.Panels;
@@ -84,20 +85,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction transaction = manager.beginTransaction();
         switch (menuItem.getItemId()) {
             case R.id.home:
-                transaction.replace(R.id.fragmentContainer,new Home());
+                transaction.replace(R.id.fragmentContainer,new Home()).addToBackStack(null);;
                 setActionBarTitle("HOME");
                 drawer.closeDrawers();
                 break;
+            case R.id.about:
+                transaction.replace(R.id.fragmentContainer,new About()).addToBackStack(null);;
+                setActionBarTitle("ABOUT");
+                drawer.closeDrawers();
+                break;
             case R.id.panels:
-                transaction.replace(R.id.fragmentContainer,new Panels());
+                transaction.replace(R.id.fragmentContainer,new Panels()).addToBackStack(null);;
                 setActionBarTitle("PANELS");
                 drawer.closeDrawers();
                 break;
             case R.id.login:
-                transaction.replace(R.id.fragmentContainer,new Login());
+                transaction.replace(R.id.fragmentContainer,new Login()).addToBackStack(null);;
                 setActionBarTitle("LOGIN");
             case R.id.logout:
-                transaction.replace(R.id.fragmentContainer,new Login());
+                transaction.replace(R.id.fragmentContainer,new Login()).addToBackStack(null);;
                 setActionBarTitle("LINIO");
                 auth.signOut();
                 hideNonAuthLinks();
@@ -131,12 +137,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragmentContainer, new Panels())
+                            .addToBackStack(null)
                             .commit();
                 } else {
                     hideNonAuthLinks();
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragmentContainer, new Login())
+                            .addToBackStack(null)
                             .commit();
                 }
             }
