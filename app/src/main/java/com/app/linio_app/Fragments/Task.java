@@ -20,7 +20,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.linio_app.Adapters.QueueAdapter;
+import com.app.linio_app.Adapters.SubtaskAdapter;
 import com.app.linio_app.Models.PanelsModel;
+import com.app.linio_app.Models.Subtask;
 import com.app.linio_app.R;
 import com.app.linio_app.Services.Firebase_Services.TaskRemover;
 import com.app.linio_app.Services.Firebase_Services.TaskService;
@@ -42,6 +44,7 @@ public class Task extends Fragment implements View.OnClickListener {
     ImageButton remove;
     EditText description;
     Button dueDate;
+    ListView taskList;
 
     ArrayList<String> taskData;
 
@@ -69,6 +72,9 @@ public class Task extends Fragment implements View.OnClickListener {
         remove = view.findViewById(R.id.remove);
         description = view.findViewById(R.id.description);
         dueDate = view.findViewById(R.id.dueDate);
+        taskList = view.findViewById(R.id.taskList);
+
+        initSubTaskList(taskList);
 
         dueDate.setOnClickListener(this);
         remove.setOnClickListener(this);
@@ -238,6 +244,13 @@ public class Task extends Fragment implements View.OnClickListener {
                         } catch (DatabaseException e) { }
                     }
                 }).show();
+    }
+
+    private void initSubTaskList(ListView listView) {
+        ArrayList<Subtask> homeModels = new ArrayList<>();
+        homeModels.add(new Subtask("Complete Subtask 1"));
+        homeModels.add(new Subtask("Complete Subtask 2"));
+        listView.setAdapter(new SubtaskAdapter(getContext(),homeModels));
     }
 
     @Override
